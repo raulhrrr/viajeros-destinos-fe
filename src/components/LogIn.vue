@@ -69,7 +69,7 @@ export default {
       await this.$apollo
         .mutate({
           mutation: gql`
-            mutation LogIn($credentials: CredentialsInput) {
+            mutation LogIn($credentials: CredentialsInput!) {
               logIn(credentials: $credentials) {
                 refresh
                 access
@@ -89,7 +89,7 @@ export default {
           this.$emit("completedLogIn", dataLogIn);
         })
         .catch((error) => {
-          alert("ERROR 401: Credenciales Incorrectas.");
+          alert("ERROR " + error);
         });
     },
 

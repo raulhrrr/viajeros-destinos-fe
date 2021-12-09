@@ -7,82 +7,115 @@
   </div>
   <div class="contenido_account">
     <div class="lado_izquierdo">
-      <div class="descripcion"></div>
-      <div class="publicaciones"></div>
+        <h3>Tus datos:</h3>
+      <div class="descripcion">
+        <span><b>ID: </b>{{ userDetailById.id }}</span>
+        <span><b>Username: </b>{{ userDetailById.username }}</span>
+        <span><b>Nombre: </b>{{ userDetailById.name }}</span>
+        <span><b>Email: </b>{{ userDetailById.email }}</span>
+        <span><b>Edad: </b>{{ userDetailById.age }}</span>
+        <span><b>Localización: </b>{{ userDetailById.location }}</span>
+        <span><b>Descripción: </b>{{ userDetailById.description }}</span>
+      </div>
     </div>
-    <div class="lado_derecho"></div>
+    <div class="lado_derecho">
+      <h3>Publicaciones realizadas por ti:</h3>
+      <ul>
+      <li v-for="publicacion in publicaciones" v-bind:key="publicacion.id">
+        <div class="publicacion" v-if="publicacion.id_user == userDetailById.id">
+          <h2>Publicación #{{ publicacion.id }}</h2>
+          <span><b>Localización del lugar:</b> {{ publicacion.location }}</span>
+          <span
+            ><b>Foto de la ubicación:</b>
+            <a href="">{{ publicacion.image }}</a></span
+          >
+          <span><b>Id propietario del post:</b> {{ publicacion.id_user }}</span>
+          <span><b>Fecha de la publicación:</b> {{ publicacion.date }}</span>
+          <span> <b> Descripción: </b> {{ publicacion.description }}</span>
+        </div>
+      </li>
+    </ul>
+    </div>
   </div>
 </template>
 
 <script>
-// import jwt_decode from "jwt-decode";
-// import axios from "axios";
+import gql from "graphql-tag";
+import jwt_decode from "jwt-decode";
 
-// export default {
-//   name: "Account",
-//   data: function () {
-//     return {
-//       username: "",
-//         password: "",
-//         name: "",
-//         email: "",
-//         age: "",
-//         location: "",
-//         description: "",
-//     };
-//   },
+export default {
+  name: "Account",
+  data: function () {
+    return {
+      userId: jwt_decode(localStorage.getItem("token_refresh")).user_id,
+      userDetailById: {
+        id: "",
+        username: "",
+        name: "",
+        email: "",
+        age: "",
+        location: "",
+        description: "",
+      },
+      publicaciones: [],
+    };
+  },
+  apollo: {
+    userDetailById: {
+      query: gql`
+        query UserDetailById($userId: Int!) {
+          userDetailById(userId: $userId) {
+            id
+            username
+            name
+            email
+            age
+            location
+            description
+          }
+        }
+      `,
+      variables() {
+        return {
+          userId: this.userId,
+        };
+      },
+    },
+  },
 
-//   methods: {
-//     getData: async function () {
-//       if (
-//         localStorage.getItem("token_access") === null ||
-//         localStorage.getItem("token_refresh") === null
-//       ) {
-//         this.$emit("logOut");
-//         return;
-//       }
-//       await this.verifyToken();
-//       let token = localStorage.getItem("token_access");
-//       let userId = jwt_decode(token).user_id.toString();
-//       axios
-//         .get(
-//           `https://mision-tic-bank-
-//     be.herokuapp.com/user/${userId}/`,
-//           { headers: { Authorization: `Bearer ${token}` } }
-//         )
-//         .then((result) => {
-//           this.name = result.data.name;
-//           this.email = result.data.email;
-//           this.balance = result.data.account.balance;
-//           this.loaded = true;
-//         })
-//         .catch(() => {
-//           this.$emit("logOut");
-//         });
-//     },
-//     verifyToken: function () {
-//       return axios
-//         .post(
-//           "https://mision-tic-bank-be.herokuapp.com/refresh/",
-//           { refresh: localStorage.getItem("token_refresh") },
-//           { headers: {} }
-//         )
-//         .then((result) => {
-//           localStorage.setItem("token_access", result.data.access);
-//         })
-//         .catch(() => {
-//           this.$emit("logOut");
-//         });
-//     },
-//   },
-//   created: async function () {
-//     this.getData();
-//   },
-// };
-//
+  async mounted() {
+    try {
+      var vue = this;
+      var resultado = await this.$apollo.query({
+        query: gql`
+          query GetAllPublications {
+            getAllPublications {
+              id
+              location
+              description
+              image
+              id_user
+              date
+            }
+          }
+        `,
+      });
+      vue.publicaciones = resultado.data.getAllPublications;
+      console.log(vue.publicaciones);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+};
 </script>
 
 <style>
+.descripcion span {
+  display: block;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
 .portada {
   margin: 20px auto;
   padding: 0;
@@ -121,36 +154,36 @@
   padding: 0;
   width: 90%;
   height: 500px;
-  border: 1px solid black;
 
   display: flex;
   justify-self: space-between;
   align-items: center;
 }
 
+.contenido_account h3 {
+  margin: 20px;
+}
+
 .lado_izquierdo {
   height: 100%;
-  width: 70%;
+  width: 60%;
   border: 1px solid black;
+  overflow: auto;
 }
 
 .lado_izquierdo .descripcion {
+  padding: 20px;
   margin: auto;
-  height: 50%;
-  width: 95%;
+  height: 100%;
+  width: 90%;
   border: 1px solid black;
-}
-
-.lado_izquierdo .publicaciones {
-  margin: auto;
-  height: 50%;
-  width: 95%;
-  border: 1px solid black;
+  overflow: auto;
 }
 
 .lado_derecho {
   height: 100%;
-  width: 30%;
+  width: 40%;
   border: 1px solid black;
+  overflow: auto;
 }
 </style>

@@ -90,7 +90,7 @@ export default {
       await this.$apollo
         .mutate({
           mutation: gql`
-            mutation SignUpUser($userInput: SignUpInput) {
+            mutation SignUpUser($userInput: SignUpInput!) {
               signUpUser(userInput: $userInput) {
                 refresh
                 access

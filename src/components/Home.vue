@@ -1,4 +1,5 @@
 <template>
+<h2>Holaaaaaaaaaaaaaa</h2>
   <div class="information">
     <h1>
       ¡Bienvenido
@@ -34,12 +35,14 @@
 <script>
 import gql from "graphql-tag";
 import jwt_decode from "jwt-decode";
+
 export default {
   name: "Home",
   data: function () {
     return {
       userId: jwt_decode(localStorage.getItem("token_refresh")).user_id,
       userDetailById: {
+        id: "",
         username: "",
         name: "",
         email: "",
@@ -54,6 +57,7 @@ export default {
       query: gql`
         query UserDetailById($userId: Int) {
           userDetailById(userId: $userId) {
+            id
             username
             name
             email
@@ -70,6 +74,10 @@ export default {
       },
     },
   },
+
+  methods: {
+    
+  }
 };
 </script>
 
