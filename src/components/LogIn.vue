@@ -3,7 +3,7 @@
     <div class="container_slider">
       <ul class="slider">
         <li id="slide1">
-          <div class="imagenes_falsas" style="background-color: red"></div>
+          <img src="../assets/slide-viajeros.png" alt="">
         </li>
         <li id="slide2">
           <div class="imagenes_falsas" style="background-color: black"></div>

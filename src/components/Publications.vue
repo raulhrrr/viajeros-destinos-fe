@@ -7,7 +7,7 @@
           <span><b>Localización del lugar:</b> {{ publicacion.location }}</span>
           <span
             ><b>Foto de la ubicación:</b>
-            <a href="">{{ publicacion.image }}</a></span
+            <a href=""> {{ publicacion.image }} </a></span
           >
           <span><b>Id propietario del post:</b> {{ publicacion.id_user }}</span>
           <span><b>Fecha de la publicación:</b> {{ publicacion.date }}</span>

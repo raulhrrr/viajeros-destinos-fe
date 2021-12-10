@@ -1,9 +1,11 @@
 <template>
   <div id="app" class="app">
     <div class="header">
-      <h1>Viajeros destinos Team 7</h1>
+      <img alt="Vue Header" src="./assets/Aplicacion-web-viajeros.png" />
       <nav>
-        <button v-if="is_auth" v-on:click="loadPublications">Publicaciones</button>
+        <button v-if="is_auth" v-on:click="loadPublications">
+          Publicaciones
+        </button>
         <button v-if="is_auth" v-on:click="loadAccount">Mi cuenta</button>
         <button v-if="is_auth" v-on:click="logOut">Cerrar Sesión</button>
         <button v-if="!is_auth" v-on:click="loadLogIn">Inicio de Sesión</button>
@@ -91,45 +93,47 @@ body {
   display: grid;
   min-height: 100vh;
   grid-template-rows: auto 1fr auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .header {
   margin: 0%;
   padding: 0;
   width: 100%;
-  height: 75px;
 
-  background-color: #283747;
+  background-color: #ffb800;
   color: #e5e7e9;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 }
 
-.header h1 {
-  width: 20%;
+.header img {
+  max-height: 280px;
+  width: 100%;
   text-align: center;
 }
 
 .header nav {
-  height: 100%;
-  width: 40%;
+
+  margin: 20px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-
-  font-size: 20px;
 }
 
 .header nav button {
   color: #e5e7e9;
   background: #283747;
   border: 1px solid #e5e7e9;
-
+  width: 110px;
   border-radius: 5px;
-  padding: 10px 20px;
+  padding: 10px;
+  margin: 1px;
 }
 
 .header nav button:hover {
@@ -139,7 +143,6 @@ body {
 }
 
 .main-component {
-  /* height: calc(100vh - 150px); */
   margin: 0%;
   padding: auto;
 
@@ -150,9 +153,9 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 75px;
+  height: 100px;
 
-  background-color: #283747;
+  background-color: #ffb800;
   color: #e5e7e9;
 }
 
